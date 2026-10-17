@@ -1,4 +1,4 @@
-# Medical-SFT-With-Web
+# sft-with-chatweb
 
 基于 **Qwen3-8B** + **QLoRA 4-bit**（Unsloth + TRL SFTTrainer）的中文医疗问答 Helper。
 
@@ -11,7 +11,7 @@
 ## 目录结构
 
 ```
-Medical-SFT-With-Web/
+sft-with-chatweb/
 ├── run.py                             # 统一入口：data / train / merge / serve
 ├── 中文医疗数据集/                     # 中文医疗问答原始数据（6 科室，GBK CSV）
 ├── src/                               # 核心代码
