@@ -1,0 +1,26 @@
+# 安装顺序:
+#   1) 先装 PyTorch:
+#      pip install torch==2.5.1 torchaudio==2.5.1 torchvision==0.20.1 \
+#          --index-url https://download.pytorch.org/whl/cu124
+#   2) 再: pip install -r requirements.txt
+# Qwen3-8B 基座最低要求: transformers>=4.51、unsloth>=2025.5。
+
+# 固定torch版本，并且安装好后要卸载torchao
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
+
+# 勿装/勿保留 torchao（≥0.17 需要 torch.int1，与 2.5.1 不兼容）；本项目 QLoRA 用 bitsandbytes
+unsloth>=2025.5.0
+trl>=0.12.0,<0.25.0
+peft>=0.13.0
+transformers>=4.51.0
+datasets>=2.20.0
+accelerate>=0.34.0
+bitsandbytes>=0.45.0
+xformers==0.0.28.post3
+python-dotenv>=1.0.0
+pandas>=2.0.0
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0

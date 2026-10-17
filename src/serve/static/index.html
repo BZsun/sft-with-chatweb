@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Helper · 中文医疗问答</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Markdown 渲染（CDN） -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+</head>
+<body>
+    <!-- 免责声明 -->
+    <div class="disclaimer" role="note">
+        <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.4"/>
+            <path d="M8 7.4v3.4"/>
+            <path d="M8 5.1h.01"/>
+        </svg>
+        <span>内容由 AI 生成，仅供健康科普参考，不构成医疗建议；如有不适请及时就医并遵医嘱。</span>
+    </div>
+
+    <!-- 顶栏 -->
+    <header class="topbar">
+        <div class="brand">
+            <span class="logo" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                    <path d="M10 3.5v13M3.5 10h13"/>
+                </svg>
+            </span>
+            <div class="brand-text">
+                <h1>Medical Helper</h1>
+                <p class="subtitle">中文医疗问答 · Powered by Qwen3-8B</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <span class="provider-badge" title="忧郁的茄子">
+                <img class="provider-avatar" src="/static/avatar.jpg" alt="忧郁的茄子"
+                     onerror="this.style.display='none'">
+                <span>忧郁的茄子</span>
+            </span>
+        </div>
+    </header>
+
+    <!-- 消息列表 -->
+    <main class="chat-container" id="chatContainer">
+        <div class="welcome" id="welcome">
+            <div class="welcome-mark" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                    <path d="M10 3.5v13M3.5 10h13"/>
+                </svg>
+            </div>
+            <h2>你好，我是你的<br><em>医疗问答助手</em></h2>
+            <p class="welcome-desc">
+                请用自然语言描述你的健康问题，我会基于医学知识为你提供严谨、专业的解答。
+            </p>
+            <div class="examples">
+                <p class="examples-title">试试这样问</p>
+                <div class="examples-grid">
+                    <button class="example-btn" data-q="我最近总是感觉头晕，应该怎么办？">
+                        <span>我最近总是感觉头晕</span>
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </button>
+                    <button class="example-btn" data-q="感冒发烧应该吃什么药？">
+                        <span>感冒发烧怎么办</span>
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </button>
+                    <button class="example-btn" data-q="高血压患者日常生活中需要注意什么？">
+                        <span>高血压注意事项</span>
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </button>
+                    <button class="example-btn" data-q="儿童发烧多少度需要去医院？">
+                        <span>儿童发烧就医时机</span>
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <ul class="messages" id="messages"></ul>
+    </main>
+
+    <!-- 底部输入区 -->
+    <footer class="composer">
+        <div class="composer-card">
+            <textarea
+                id="userInput"
+                placeholder="请描述你的健康问题…"
+                rows="1"
+            ></textarea>
+            <div class="composer-bar">
+                <span class="composer-tip">Enter 发送 · Shift + Enter 换行</span>
+                <div class="composer-actions">
+                    <button id="clearBtn" class="send-btn ghost" title="清空对话" aria-label="清空对话">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2.5 4h11"/>
+                            <path d="M5.5 4V2.8c0-.4.4-.8.8-.8h3.4c.4 0 .8.4.8.8V4"/>
+                            <path d="M3.8 4l.6 8.6c0 .7.6 1.4 1.4 1.4h4.4c.8 0 1.4-.6 1.4-1.4L12.2 4"/>
+                            <path d="M6.5 7v4M9.5 7v4"/>
+                        </svg>
+                    </button>
+                    <button id="stopBtn" class="send-btn ghost" disabled title="停止生成" aria-label="停止生成">
+                        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <rect x="3.5" y="3.5" width="9" height="9" rx="2"/>
+                        </svg>
+                    </button>
+                    <button id="sendBtn" class="send-btn" aria-label="发送">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M8 13V3M3.8 7.2L8 3l4.2 4.2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <p class="composer-hint">基于 Qwen3-8B 微调 · 生成内容仅供参考</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
